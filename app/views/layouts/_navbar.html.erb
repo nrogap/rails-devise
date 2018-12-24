@@ -19,12 +19,19 @@
 
     <div class="navbar-end">
       <div class="navbar-item">
-        <div class="buttons">
-          <%= link_to new_user_registration_path, class: "button is-primary" do %>
-            <strong>Sign up</strong>
-          <% end %>
-          <%= link_to "Log in", new_user_session_path, class: "button is-light" %>
-        </div>
+
+        <% if user_signed_in? %>
+          <%= link_to current_user.email, edit_user_registration_path, class: 'navbar-item' %>
+          <%= link_to "Log out", destroy_user_session_path, method: :delete, class: 'navbar-item' %>
+        <% else %>
+          <div class="buttons">
+            <%= link_to new_user_registration_path, class: "button is-primary" do %>
+              <strong>Sign up</strong>
+            <% end %>
+            <%= link_to "Log in", new_user_session_path, class: "button is-light" %>
+          </div>
+        <% end %>
+
       </div>
     </div>
   </div>
