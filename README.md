@@ -1,5 +1,5 @@
 # Rails and Devise
-useful authentication user library
+Devise is a useful authentication library. This repository follow the [GoRails tutorial](#resource).
 
 # installation
 ```
