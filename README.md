@@ -1,24 +1,76 @@
-# README
+# Rails and Devise
+useful authentication user library
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+# installation
+```
+gem install devise
+bundle install
+```
+# setup
+after run this below command, follow the suggestion 5 steps in console
+```
+rails generate devise:install
+```
 
-Things you may want to cover:
+generate **User** tables by devise helper
+```
+rails generate devise user
+rake db:migrate
+```
+# Routes
+on file routes.rb we will get this line
+```
+devise_for :users
+```
 
-* Ruby version
+check routes by `rails routes`.
 
-* System dependencies
+- `new_user_registration_path register` new user
+- `new_user_session_path` login user
+- `destroy_user_session_path` log out user
 
-* Configuration
+# Custom Devise's Views
+- `rails generate devise:views`
+- go to `app/views/devise/`
+# Helper
+## View
+- `<%= notice %>` notice message from devise such as 'login success'
+- `<%= alert %>` alert or error message from devise such as 'need to login`
+- `<% if user_signed_in? %>`
+- `<%= current_user %>` such as `<%= current_user.email %>`
 
-* Database creation
+## Controller
+### check user session before access
+```ruby
+class BooksController < ApplicationController
+before_action :authenticate_user!, except: [:index, :show]
+```
+### create Book with current user
+```ruby
+# app/models/user.rb
+class User < ApplicationRecord
+...
+  has_many :books
+...
+```
+```ruby
+# app/models/book.rb
+class Book < ApplicationRecord
+...
+  belongs_to :books
+...
+```
+```ruby
+class BooksController < ApplicationController
+...
+  def create
+    # @book = Book.new(book_params) # original
+    @book = current_user.books.new(book_params) # can use current_user for create books
+  ...
+  end
+...
+```
 
-* Database initialization
+# Resource
+- [User Authentication in Rails with Devise](https://www.youtube.com/watch?v=ef11ToOE4N0)
 
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
